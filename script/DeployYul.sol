@@ -32,3 +32,33 @@ contract DeployYul is Script {
         console.log(deployedAddress);
     }
 }
+
+contract DeployAsm is Script {
+
+    function setUp() public {
+    }
+
+    function run() public {
+        string memory bashCommand = 'cast abi-encode "f(bytes)" $(eas src/XPSplitter.etk | tail -1)';
+
+        string[] memory inputs = new string[](3);
+        inputs[0] = "bash";
+        inputs[1] = "-c";
+        inputs[2] = bashCommand;
+
+        bytes memory bytecode = abi.decode(vm.ffi(inputs), (bytes));
+        address deployedAddress;
+
+        vm.broadcast();
+        assembly {
+            deployedAddress := create(0, add(bytecode, 0x20), mload(bytecode))
+        }
+
+        require(
+            deployedAddress != address(0),
+            "YulDeployer could not deploy contract"
+        );
+
+        console.log(deployedAddress);
+    }
+}

@@ -43,7 +43,7 @@ contract ExampleTest is Test {
     }
 
     function testAsmSplitter(uint256 _amountToSplit) public {
-        vm.assume(_amountToSplit < msg.sender.balance);
+        vm.assume(_amountToSplit < msg.sender.balance && _amountToSplit > 100);
 
         // Addresses hardcoded in the splitter
         uint256 _balanceXPBefore = XPAddress.balance;
