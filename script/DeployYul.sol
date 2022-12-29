@@ -9,7 +9,7 @@ contract DeployYul is Script {
     }
 
     function run() public {
-        string memory bashCommand = 'cast abi-encode "f(bytes)" $(solc --yul yul/XPSplitter.yul --bin | tail -1)';
+        string memory bashCommand = 'cast abi-encode "f(bytes)" $(solc --yul src/XPSplitter.yul --bin | tail -1)';
 
         string[] memory inputs = new string[](3);
         inputs[0] = "bash";

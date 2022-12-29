@@ -5,13 +5,13 @@ pragma solidity 0.8.15;
 
 import "forge-std/Test.sol";
 
-contract YulDeployer is Test {
-    ///@notice Compiles a Yul contract and returns the address that the contract was deployeod to
+contract AsmDeployer is Test {
+    ///@notice Compiles an assembly contract and returns the address that the contract was deployeod to
     ///@notice If deployment fails, an error will be thrown
     ///@param fileName - The file name of the Yul contract. For example, the file name for "Example.yul" is "Example"
     ///@return deployedAddress - The address that the contract was deployed to
     function deployContract(string memory fileName) public returns (address) {
-        string memory bashCommand = string.concat('cast abi-encode "f(bytes)" $(solc --yul src/', string.concat(fileName, ".yul --bin | tail -1)"));
+        string memory bashCommand = string.concat('cast abi-encode "f(bytes)" $(eas src/', string.concat(fileName, ".etk | tail -1)"));
 
         string[] memory inputs = new string[](3);
         inputs[0] = "bash";
@@ -29,7 +29,7 @@ contract YulDeployer is Test {
         ///@notice check that the deployment was successful
         require(
             deployedAddress != address(0),
-            "YulDeployer could not deploy contract"
+            "AsmDeployer could not deploy contract"
         );
 
         ///@notice return the address that the contract was deployed to

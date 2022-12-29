@@ -1,0 +1,43 @@
+# Constructor: copy code and return it
+push1 0x50
+push1 0x0c
+push1 0x00
+codecopy
+push1 0x50
+push1 0x00
+return
+
+# call1:
+returndatasize
+returndatasize
+returndatasize
+returndatasize
+
+push2 0x2710 # 10000
+push2 0x0190 # 400 -> 400/10000 = 4% cut for the client
+callvalue
+mul
+div
+
+push20 0x3443d0a6956e7e0a13cd1c54f6bef24b0d54f420 # client address - TO CHANGE
+returndatasize
+
+# call2:
+returndatasize
+returndatasize
+returndatasize
+returndatasize
+
+dup7
+callvalue
+sub
+# underflow:
+-- TODO --
+
+
+push20 0x6c4dc45b51bb46a60b99fb5395692ce11bbe49c5 # XP address
+
+returndatasize
+
+call
+call
