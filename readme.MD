@@ -12,16 +12,19 @@ Credit to https://github.com/CodeForcer/foundry-yul for the idea/ffi magic
 
 # Gas consumption:
 Solidity version looks more expensive (tough for Forge to evaluate it, as we use a low level call/fallback) - Snapshot:
+```
 ExampleTest:testAsmSplitter(uint256) (runs: 256, μ: 75839, ~: 89072)
 ExampleTest:testSoliditySplitter(uint256) (runs: 256, μ: 89511, ~: 89511)
 ExampleTest:testYulSplitter(uint256) (runs: 256, μ: 75888, ~: 89121)
+```
  
 Assembly version is 26 units cheaper. Here is a full breakdown, by opcode (see the source code for comments, etc), the cost of call might be wrong tho (but should be identical between 2 versions anyway):
 
 Total Yul: 68681 (81 calls excl.)
 Total Asm: 68655 (55 calls excl.)
 
-Cost breakdown Yul:
+Cost breakdown Yul (compiled):
+```assembly
 PUSH20 0x6c4dc45b51bb46a60b99fb5395692ce11bbe49c5 - 3
 PUSH20 0x3443d0a6956e7e0a13cd1c54f6bef24b0d54f420 - 3
 PUSH2 0x2710 - 3
@@ -52,8 +55,9 @@ POP - 2
 POP - 2
 POP - 2
 POP - 2
-
+```
 Cost breakdown assembly:
+```assembly
 returndatasize - 2
 returndatasize - 2
 returndatasize - 2
@@ -77,3 +81,4 @@ returndatasize - 2
 call - 34300
 pop - 3
 call - 34300
+```
