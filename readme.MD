@@ -8,7 +8,11 @@ To run this repo, you'll need:
 
 You can run the test using `forge test` or use the deploy scripts (`forge script DeployYul` or `forge script DeployAsm`) - do not forget to change the beneficiaries addresses!
 
+Credit to https://github.com/CodeForcer/foundry-yul for the idea/ffi magic
+
 # Gas consumption:
+Solidity version looks more expensive (tough for Forge to evaluate it, as we use a low level call/fallback)
+ 
 Assembly version is 26 units cheaper. Here is a full breakdown, by opcode (see the source code for comments, etc), the cost of call might be wrong tho (but should be identical between 2 versions anyway):
 
 Total Yul: 68681 (81 calls excl.)

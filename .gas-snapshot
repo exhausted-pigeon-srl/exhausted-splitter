@@ -1,0 +1,3 @@
+ExampleTest:testAsmSplitter(uint256) (runs: 256, μ: 75839, ~: 89072)
+ExampleTest:testSoliditySplitter(uint256) (runs: 256, μ: 89511, ~: 89511)
+ExampleTest:testYulSplitter(uint256) (runs: 256, μ: 75888, ~: 89121)

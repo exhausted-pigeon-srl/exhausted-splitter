@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
+
+import "../src/XPSplitter.sol";
 import "./utils/YulDeployer.sol";
 import "./utils/AsmDeployer.sol";
 
@@ -13,6 +15,7 @@ contract ExampleTest is Test {
 
     XPSPlitter XPSPlitterYulContract;
     XPSPlitter XPSPlitterAsmContract;
+    XPSplitter XPSplitterSolidityContract;
 
     address XPAddress = address(0x6C4dc45b51bB46A60B99fB5395692ce11bBE49C5);
     address clientAddress = address(0x3443d0a6956e7E0A13Cd1c54F6bEf24B0d54f420);
@@ -20,6 +23,7 @@ contract ExampleTest is Test {
     function setUp() public {
         XPSPlitterAsmContract = XPSPlitter(asmDeployer.deployContract("XPSplitter"));
         XPSPlitterYulContract = XPSPlitter(yulDeployer.deployContract("XPSplitter"));
+        XPSplitterSolidityContract = new XPSplitter();
     }
 
     function testYulSplitter(uint256 _amountToSplit) public {
@@ -43,7 +47,7 @@ contract ExampleTest is Test {
     }
 
     function testAsmSplitter(uint256 _amountToSplit) public {
-        vm.assume(_amountToSplit < msg.sender.balance && _amountToSplit > 100);
+        vm.assume(_amountToSplit < msg.sender.balance);
 
         // Addresses hardcoded in the splitter
         uint256 _balanceXPBefore = XPAddress.balance;
@@ -51,6 +55,26 @@ contract ExampleTest is Test {
         
         // The actual call (call data are discarded)
         (bool success, bytes memory data) = address(XPSPlitterAsmContract).call{value: _amountToSplit}('whateverCallData');
+
+        // Check: call is successful and no data is returned?
+        assertTrue(success);
+        assertEq(data.length, 0);
+
+        // Split hardcoded as 4% - 96% (floor for client, ceiling for XP, if rounding error)
+        // Check: amounts sent are correct?
+        assertEq(clientAddress.balance, _balanceClientBefore + (400 * _amountToSplit) / 10000);
+        assertEq(XPAddress.balance, _balanceXPBefore + (_amountToSplit - (400 * _amountToSplit) / 10000));
+    }
+
+    function testSoliditySplitter(uint256 _amountToSplit) public {
+        vm.assume(_amountToSplit < msg.sender.balance && _amountToSplit > 100);
+
+        // Addresses hardcoded in the splitter
+        uint256 _balanceXPBefore = XPAddress.balance;
+        uint256 _balanceClientBefore = clientAddress.balance;
+        
+        // The actual call (call data are discarded)
+        (bool success, bytes memory data) = address(XPSplitterSolidityContract).call{value: _amountToSplit}('whateverCallData');
 
         // Check: call is successful and no data is returned?
         assertTrue(success);
