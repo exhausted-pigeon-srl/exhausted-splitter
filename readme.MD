@@ -11,7 +11,10 @@ You can run the test using `forge test` or use the deploy scripts (`forge script
 Credit to https://github.com/CodeForcer/foundry-yul for the idea/ffi magic
 
 # Gas consumption:
-Solidity version looks more expensive (tough for Forge to evaluate it, as we use a low level call/fallback)
+Solidity version looks more expensive (tough for Forge to evaluate it, as we use a low level call/fallback) - Snapshot:
+ExampleTest:testAsmSplitter(uint256) (runs: 256, μ: 75839, ~: 89072)
+ExampleTest:testSoliditySplitter(uint256) (runs: 256, μ: 89511, ~: 89511)
+ExampleTest:testYulSplitter(uint256) (runs: 256, μ: 75888, ~: 89121)
  
 Assembly version is 26 units cheaper. Here is a full breakdown, by opcode (see the source code for comments, etc), the cost of call might be wrong tho (but should be identical between 2 versions anyway):
 
