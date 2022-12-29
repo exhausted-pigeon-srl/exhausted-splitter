@@ -1,4 +1,4 @@
-# Minimal contract which splits every eth in into 2 addresses, at a given rate.
+# Minimal contracts in Yul and pure assembly, which split every eth in into 2 addresses, at a given rate.
 2 versions are available: coded in pure Yul or in pure assembly (ETK).
 
 To run this repo, you'll need:
